@@ -1,6 +1,22 @@
 # lmdbmap
 
-A C++ wrapper for LMDB providing a `std::map` and `std::multimap` like interface with automatic Boost.Serialization support.
+![CI](https://github.com/givia/lmdbmap/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg)
+
+**lmdbmap** is a high-performance C++ wrapper for [LMDB](https://www.symas.com/lmdb) (Lightning Memory-Mapped Database) that provides a familiar `std::map` and `std::multimap` like interface. It seamlessly integrates with [Boost.Serialization](https://www.boost.org/doc/libs/release/libs/serialization/) to allow storing arbitrary C++ objects as keys and values.
+
+## Project Description
+
+This library bridges the gap between the raw, low-level C API of LMDB and the idiomatic, type-safe C++ STL containers. It is designed for applications that require:
+- **Persistence**: Data survives process restarts.
+- **Performance**: Leveraging LMDB's memory-mapping for read speeds comparable to in-memory hash tables.
+- **Ease of Use**: Drop-in replacement for `std::map` in many contexts (with transaction awareness).
+- **Type Safety**: Automatic serialization/deserialization of complex types.
+
+## Tags / Topics
+
+`cpp`, `cplusplus`, `lmdb`, `database`, `key-value-store`, `persistence`, `serialization`, `boost`, `map`, `multimap`, `embedded-database`, `high-performance`
 
 ## Features
 
