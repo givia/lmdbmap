@@ -68,6 +68,13 @@ public:
         if (rc != 0 && rc != MDB_NOTFOUND) throw std::runtime_error(mdb_strerror(rc));
     }
 
+    bool empty(transaction& txn) {
+        MDB_stat stat;
+        int rc = mdb_stat(txn, dbi_, &stat);
+        if (rc != 0) throw std::runtime_error(mdb_strerror(rc));
+        return stat.ms_entries == 0;
+    }
+
     class iterator {
     public:
         using iterator_category = std::forward_iterator_tag;

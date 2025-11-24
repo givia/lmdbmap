@@ -137,3 +137,20 @@ TEST_F(MapTest, Range) {
         EXPECT_EQ(range.second->first, 30);
     }
 }
+
+TEST_F(MapTest, Empty) {
+    lmdbmap::map<int, std::string> m(*env, "map_empty");
+    {
+        lmdbmap::transaction txn(*env, true);
+        EXPECT_TRUE(m.empty(txn));
+    }
+    {
+        lmdbmap::transaction txn(*env);
+        m.insert(txn, 1, "one");
+        txn.commit();
+    }
+    {
+        lmdbmap::transaction txn(*env, true);
+        EXPECT_FALSE(m.empty(txn));
+    }
+}

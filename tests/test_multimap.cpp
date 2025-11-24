@@ -88,3 +88,20 @@ TEST_F(MultimapTest, Range) {
         EXPECT_EQ(count, 2);
     }
 }
+
+TEST_F(MultimapTest, Empty) {
+    lmdbmap::multimap<int, std::string> m(*env, "mmap_empty");
+    {
+        lmdbmap::transaction txn(*env, true);
+        EXPECT_TRUE(m.empty(txn));
+    }
+    {
+        lmdbmap::transaction txn(*env);
+        m.insert(txn, 1, "one");
+        txn.commit();
+    }
+    {
+        lmdbmap::transaction txn(*env, true);
+        EXPECT_FALSE(m.empty(txn));
+    }
+}
