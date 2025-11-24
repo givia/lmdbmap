@@ -52,6 +52,37 @@ ctest --output-on-failure
 
 ## Usage
 
+### CMake Integration
+
+#### Option 1: Installed Package (Debian/Ubuntu)
+
+If you have installed the library via the `.deb` package:
+
+```cmake
+find_package(lmdbmap REQUIRED)
+
+add_executable(my_app main.cpp)
+target_link_libraries(my_app PRIVATE lmdbmap::lmdbmap)
+```
+
+#### Option 2: FetchContent
+
+You can include `lmdbmap` directly in your project using CMake's `FetchContent`:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+  lmdbmap
+  GIT_REPOSITORY https://github.com/givia/lmdbmap.git
+  GIT_TAG v0.2.0
+)
+FetchContent_MakeAvailable(lmdbmap)
+
+add_executable(my_app main.cpp)
+target_link_libraries(my_app PRIVATE lmdbmap)
+```
+
 ### Map
 
 ```cpp
