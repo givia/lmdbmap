@@ -1,0 +1,31 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Boost REQUIRED COMPONENTS serialization system filesystem)
+
+# LMDB is usually found via find_library/find_path in the main project, 
+# but for the config we might need to ensure it's found if we are linking against it.
+# Since lmdbmap is INTERFACE and links against ${LMDB_LIBRARY}, consumers need to find it.
+# However, standard FindLMDB.cmake is not always available. 
+# We can try to find it again or assume the consumer finds it.
+# Better to provide a hint or find it.
+
+# For simplicity, let's assume the system has it or the user provides it.
+# But since we used find_library in the main CMakeLists, we should probably try to find it here too 
+# if we want to be helpful, OR rely on the fact that it's an interface link library.
+
+# Actually, since we linked with absolute path in the build, we need to be careful.
+# Ideally we should create an IMPORTED target for LMDB if we want to export it properly, 
+# or just let the user link it.
+
+# Let's try to find it again to be safe.
+find_library(LMDB_LIBRARY lmdb)
+find_path(LMDB_INCLUDE_DIR lmdb.h)
+
+if (NOT LMDB_LIBRARY OR NOT LMDB_INCLUDE_DIR)
+    message(STATUS "LMDB not found by lmdbmapConfig.cmake")
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/lmdbmapTargets.cmake")
+
+check_required_components(lmdbmap)
