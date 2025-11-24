@@ -154,3 +154,25 @@ TEST_F(MapTest, Empty) {
         EXPECT_FALSE(m.empty(txn));
     }
 }
+
+TEST_F(MapTest, RangeLoop) {
+    lmdbmap::map<int, std::string> m(*env, "map_loop");
+    {
+        lmdbmap::transaction txn(*env);
+        m.insert(txn, 1, "one");
+        m.insert(txn, 2, "two");
+        m.insert(txn, 3, "three");
+        txn.commit();
+    }
+    {
+        lmdbmap::transaction txn(*env, true);
+        int count = 0;
+        for (const auto& kv : m.range(txn)) {
+            if (kv.first == 1) EXPECT_EQ(kv.second, "one");
+            if (kv.first == 2) EXPECT_EQ(kv.second, "two");
+            if (kv.first == 3) EXPECT_EQ(kv.second, "three");
+            count++;
+        }
+        EXPECT_EQ(count, 3);
+    }
+}

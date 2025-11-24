@@ -292,6 +292,18 @@ public:
         return {lower_bound(txn, key), upper_bound(txn, key)};
     }
 
+    struct range_proxy {
+        multimap& map_;
+        transaction& txn_;
+
+        iterator begin() { return map_.begin(txn_); }
+        iterator end() { return map_.end(txn_); }
+    };
+
+    range_proxy range(transaction& txn) {
+        return {*this, txn};
+    }
+
 private:
     environment& env_;
     MDB_dbi dbi_;

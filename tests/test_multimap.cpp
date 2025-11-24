@@ -105,3 +105,23 @@ TEST_F(MultimapTest, Empty) {
         EXPECT_FALSE(m.empty(txn));
     }
 }
+
+TEST_F(MultimapTest, RangeLoop) {
+    lmdbmap::multimap<int, std::string> m(*env, "mmap_loop");
+    {
+        lmdbmap::transaction txn(*env);
+        m.insert(txn, 1, "one");
+        m.insert(txn, 2, "two");
+        txn.commit();
+    }
+    {
+        lmdbmap::transaction txn(*env, true);
+        int count = 0;
+        for (const auto& kv : m.range(txn)) {
+            if (kv.first == 1) EXPECT_EQ(kv.second, "one");
+            if (kv.first == 2) EXPECT_EQ(kv.second, "two");
+            count++;
+        }
+        EXPECT_EQ(count, 2);
+    }
+}

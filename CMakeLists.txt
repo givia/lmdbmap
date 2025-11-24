@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(lmdbmap VERSION 0.3.0)
+project(lmdbmap VERSION 0.4.0)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to Release as none was specified.")
