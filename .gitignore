@@ -1,0 +1,13 @@
+build/
+.vscode/
+.DS_Store
+*.swp
+*~
+
+# Database directories created by tests and examples
+test_db_*/
+example_db_*/
+bench_db_*/
+
+# CMake user files
+CMakeUserPresets.json
